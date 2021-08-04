@@ -1,7 +1,7 @@
 // Speeds
 const MOVE_SPEED = 250
 const SLICER_SPEED = 200
-const SKELETOR_SPEED = 120
+const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
 const Y_SCREEN = 7
 const X_SCREEN = 7
@@ -50,7 +50,10 @@ loadSprite('sword-left', 'sword-l.png')
 loadSprite('sword-right', 'sword-r.png')
 
 loadSprite('octorok', 'octorok-d1.png')
-loadSprite('skeletor', 'sword-u.png')
+loadSprite('octorok-up', 'octorok-u1.png')
+loadSprite('octorok-down', 'octorok-d1.png')
+loadSprite('octorok-left', 'octorok-l1.png')
+loadSprite('octorok-right', 'octorok-r1.png')
 loadSprite('slicer', 'sword-u.png')
 
 loadSound('music', 'overworld.mp3');
@@ -62,62 +65,11 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 
 	layers(['bg', 'obj', 'ui'], 'obj')
 
-	const maps = [
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
-		[ [], [], [], [], [], [], [],
-		[
-			'xxxxxxx^^xxxxxxx',
-			'xxxxcx   xxxxxxx',
-			'xxx      xxxxxxx',
-			'xx       xxxxxxx',
-			'x         xxxxxx',
-			'<              >',
-			'x             xx',
-			'xx            xx',
-			'xx            xx',
-			'xxxxxxxxxxxxxxxx',
-			'xxxxxxxxxxxxxxxx'
-		],
-		[
-			'xxu^u^u^^u^u^u^u',
-			'xxu u u  u u u u',
-			'xx             >',
-			'x     u  u u u >',
-			'x u uo    o    >',
-			'<     u  u u u >',
-			'x u co    o    >',
-			'x     u  u u u >',
-			'xx             >',
-			'xxuuuuuuuuuuuuuu',
-			'xxuuuuuuuuuuuuuu'
-		],
-		[
-			'xxu^u^u^^u^u^u^u',
-			'xxu u u  u u u u',
-			'xx             >',
-			'x     u  u u u >',
-			'x u uo    o    >',
-			'<     u  u u u >',
-			'x u co    o    >',
-			'x     u  u u u >',
-			'xx             >',
-			'xxuuuuuuuuuuuuuu',
-			'xxuuuuuuuuuuuuuu'
-		],
-		, [], [], [], [], [], [] ]
-	]
+	
 
 	const levelCfg = {
 		width: 48,
 		height: 48,
-		c: [sprite('cave'), solid(), 'door'],
-		o: [sprite('octorok'), 'dangerous', 'skeletor', { dir: -1, timer: 0 }],
 		
 		b: [sprite('boulder'), solid(), 'wall'],
 		t: [sprite('tree-brown'), solid(), 'wall'],
@@ -125,13 +77,14 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		w: [sprite('wall-brown'), solid(), 'wall'],
 		x: [sprite('wall-green'), solid(), 'wall'],
 		
+		c: [sprite('cave'), solid(), 'door'],
 		'^': [sprite('bg'), 'screen-up'],
 		'v': [sprite('bg'), 'screen-down'],
 		'<': [sprite('bg'), 'screen-left'],
 		'>': [sprite('bg'), 'screen-right'],
 		
-		'*': [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous'],
-		'}': [sprite('skeletor'), 'dangerous', 'skeletor', { dir: -1, timer: 0 }],
+		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
+		s: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
 	}
 	
 	addLevel(maps[y_screen][x_screen], levelCfg)
@@ -139,8 +92,8 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	add([sprite('bg'), layer('bg')])
 
 	const rupeeLabel = add([
-		text('0'),
-		pos(400, 450),
+		text('Rupees: ' + rupee),
+		pos(25, 575),
 		layer('ui'),
 		{
 			value: rupee
@@ -148,7 +101,9 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		scale(2)
 	])
 
-	add([text('screen ' + y_screen + ', ' + x_screen), pos(400, 465), scale(2)])
+	add(
+		[text('Screen: y=' + y_screen + ',x=' + x_screen + ''), pos(25, 550), scale(2)]
+	)
 
 	const player = add([
 		sprite('link-up'),
@@ -217,6 +172,10 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		player.move(0, MOVE_SPEED)
 		player.dir = vec2(0, 1)
 	})
+	
+	keyPress(['space', 'f'], () => {
+		attack(player.pos.add(player.dir.scale(48)))
+	})
 
 	function attack(p) {
 		var sword;
@@ -246,22 +205,18 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		})
 	}
 
-	keyPress(['space', 'f'], () => {
-		attack(player.pos.add(player.dir.scale(48)))
-	})
-
 	player.collides('door', (d) => {
 		destroy(d)
 	})
 
-	collides('kaboom', 'skeletor', (k,s) => {
+	collides('kaboom', 'octorok', (k,s) => {
 		camShake(4)
 		wait(1, () => {
 			destroy(k)
 		})
 		destroy(s)
 		rupeeLabel.value++
-		rupeeLabel.text = rupeeLabel.value
+		rupeeLabel.text = 'Rupees: ' + rupeeLabel.value
 	})
 
 	action('slicer', (s) => {
@@ -272,17 +227,25 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		s.dir = -s.dir
 	})
 
-	action('skeletor', (s) => {
-		s.move(0, s.dir * SKELETOR_SPEED)
+	action('octorok', (s) => {
+		if (s.axis == 0) {
+			s.move(s.dir * OCTOROK_SPEED, 0)
+		}
+		
+		else {
+			s.move(0, s.dir * OCTOROK_SPEED)
+		}
+		
 		s.timer -= dt()
 		
 		if (s.timer <= 0) {
+			s.axis = getRandomInt(0, 1)
 			s.dir = -s.dir
 			s.timer = rand(5)
 		}
 	})
 
-	collides('skeletor', 'wall', (s) => {
+	collides('octorok', 'wall', (s) => {
 		s.dir = -s.dir
 	})
 
@@ -296,3 +259,7 @@ scene('lose', ({ rupee }) => {
 })
 
 start('game', { x_screen: X_SCREEN, y_screen: Y_SCREEN, rupee: 0 })
+
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
