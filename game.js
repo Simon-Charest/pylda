@@ -2,6 +2,9 @@
 const MOVE_SPEED = 250
 const SLICER_SPEED = 200
 const SKELETOR_SPEED = 120
+const ROOT_DIR = 'http://localhost/resource/'
+const Y_SCREEN = 7
+const X_SCREEN = 7
 
 kaboom({
 	global: true,
@@ -12,7 +15,7 @@ kaboom({
 })
 
 // Game Logic
-loadRoot('http://localhost/resource/')
+loadRoot(ROOT_DIR)
 loadSprite('link-up', 'link-u1.png')
 loadSprite('link-down', 'link-d1.png')
 loadSprite('link-left', 'link-l1.png')
@@ -31,134 +34,121 @@ loadSprite('link-down', 'link-down.png', {
 });
 */
 
+loadSprite('bg', 'bg.png')
+
+loadSprite('boulder', 'boulder.png')
+loadSprite('tree-brown', 'tree-brown.png')
+loadSprite('tree-green', 'tree-green.png')
+loadSprite('wall-brown', 'wall-brown.png')
+loadSprite('wall-green', 'wall-green.png')
+
 loadSprite('cave', 'cave.png')
-loadSprite('octorok', 'octorok-d1.png')
+
 loadSprite('sword-up', 'sword-u.png')
 loadSprite('sword-down', 'sword-d.png')
 loadSprite('sword-left', 'sword-l.png')
 loadSprite('sword-right', 'sword-r.png')
-loadSprite('tree', 'tree.png')
-loadSprite('wall', 'wall.png')
 
-loadSprite('left-wall', 'tree.png')
-loadSprite('top-wall', 'tree.png')
-loadSprite('bottom-wall', 'tree.png')
-loadSprite('right-wall', 'tree.png')
-loadSprite('bottom-left-wall', 'tree.png')
-loadSprite('bottom-right-wall', 'tree.png')
-loadSprite('top-left-wall', 'tree.png')
-loadSprite('top-right-wall', 'tree.png')
+loadSprite('octorok', 'octorok-d1.png')
+loadSprite('skeletor', 'sword-u.png')
+loadSprite('slicer', 'sword-u.png')
 
-loadSprite('top-door', 'wall.png')
-loadSprite('fire-pot', 'wall.png')
-loadSprite('left-door', 'wall.png')
-loadSprite('lanterns', 'wall.png')
-loadSprite('slicer', 'wall.png')
-loadSprite('skeletor', 'wall.png')
-loadSprite('kaboom', 'wall.png')
-loadSprite('stairs', 'wall.png')
+loadSound('music', 'overworld.mp3');
+loadSound('attack', 'LOZ_Sword_Slash.wav');
 
-loadSprite('bg', 'bg.png')
-
-loadSound("music", "overworld.mp3");
-loadSound("attack", "LOZ_Sword_Slash.wav");
-
-scene('game', ({ level, score }) => {
-	const music = play("music");
+scene('game', ({ y_screen, x_screen, rupee }) => {
+	const music = play('music');
 	music.loop();
 
 	layers(['bg', 'obj', 'ui'], 'obj')
 
 	const maps = [
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [] ],
+		[ [], [], [], [], [], [], [],
 		[
-			'wwwwwww  wwwwwww',
-			'wwwwcw   wwwwwww',
-			'www      wwwwwww',
-			'ww       wwwwwww',
-			'w         wwwwww',
-			'                ',
-			'w             ww',
-			'ww o          ww',
-			'ww            ww',
-			'wwwwwwwwwwwwwwww',
-			'wwwwwwwwwwwwwwww'
+			'xxxxxxx^^xxxxxxx',
+			'xxxxcx   xxxxxxx',
+			'xxx      xxxxxxx',
+			'xx       xxxxxxx',
+			'x         xxxxxx',
+			'<              >',
+			'x             xx',
+			'xx            xx',
+			'xx            xx',
+			'xxxxxxxxxxxxxxxx',
+			'xxxxxxxxxxxxxxxx'
 		],
 		[
-			'ttttttt  ttttttt',
-			'ttttct   ttttttt',
-			'ttt      ttttttt',
-			'tt       ttttttt',
-			't         tttttt',
-			'                ',
-			't             tt',
-			'tt            tt',
-			'tt            tt',
-			'tttttttttttttttt',
-			'tttttttttttttttt'
+			'xxu^u^u^^u^u^u^u',
+			'xxu u u  u u u u',
+			'xx             >',
+			'x     u  u u u >',
+			'x u uo    o    >',
+			'<     u  u u u >',
+			'x u co    o    >',
+			'x     u  u u u >',
+			'xx             >',
+			'xxuuuuuuuuuuuuuu',
+			'xxuuuuuuuuuuuuuu'
 		],
 		[
-			'ycc)cc^ccw',
-			'a        b',
-			'a      * b',
-			'a    (   b',
-			'%        b',
-			'a    (   b',
-			'a   *    b',
-			'a        b',
-			'xdd)dd)ddz'
+			'xxu^u^u^^u^u^u^u',
+			'xxu u u  u u u u',
+			'xx             >',
+			'x     u  u u u >',
+			'x u uo    o    >',
+			'<     u  u u u >',
+			'x u co    o    >',
+			'x     u  u u u >',
+			'xx             >',
+			'xxuuuuuuuuuuuuuu',
+			'xxuuuuuuuuuuuuuu'
 		],
-		[
-			'yccccccccw',
-			'a        b',
-			')        )',
-			'a        b',
-			'a        b',
-			'a    $   b',
-			')   }    )',
-			'a        b',
-			'xddddddddz'
-		]
+		, [], [], [], [], [], [] ]
 	]
 
 	const levelCfg = {
 		width: 48,
 		height: 48,
-		a: [sprite('left-wall'), solid(), 'wall'],
-		b: [sprite('right-wall'), solid(), 'wall'],
 		c: [sprite('cave'), solid(), 'door'],
-		//c: [sprite('top-wall'), solid(), 'wall'],
-		d: [sprite('bottom-wall'), solid(), 'wall'],
 		o: [sprite('octorok'), 'dangerous', 'skeletor', { dir: -1, timer: 0 }],
-		t: [sprite('tree'), solid(), 'wall'],
-		w: [sprite('wall'), solid(), 'wall'],
-		//w: [sprite('top-right-wall'), solid(), 'wall'],
-		x: [sprite('bottom-left-wall'), solid(), 'wall'],
-		y: [sprite('top-left-wall'), solid(), 'wall'],
-		z: [sprite('bottom-right-wall'), solid(), 'wall'],
-		'%': [sprite('left-door'), solid(), 'door'],
-		'^': [sprite('top-door'), 'next-level'],
-		$: [sprite('stairs'), 'next-level'],
+		
+		b: [sprite('boulder'), solid(), 'wall'],
+		t: [sprite('tree-brown'), solid(), 'wall'],
+		u: [sprite('tree-green'), solid(), 'wall'],
+		w: [sprite('wall-brown'), solid(), 'wall'],
+		x: [sprite('wall-green'), solid(), 'wall'],
+		
+		'^': [sprite('bg'), 'screen-up'],
+		'v': [sprite('bg'), 'screen-down'],
+		'<': [sprite('bg'), 'screen-left'],
+		'>': [sprite('bg'), 'screen-right'],
+		
 		'*': [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous'],
 		'}': [sprite('skeletor'), 'dangerous', 'skeletor', { dir: -1, timer: 0 }],
-		')': [sprite('lanterns'), solid()],
-		'(': [sprite('fire-pot'), solid()],
 	}
 	
-	addLevel(maps[level], levelCfg)
+	addLevel(maps[y_screen][x_screen], levelCfg)
 
 	add([sprite('bg'), layer('bg')])
 
-	const scoreLabel = add([
+	const rupeeLabel = add([
 		text('0'),
 		pos(400, 450),
 		layer('ui'),
 		{
-			value: score
+			value: rupee
 		},
 		scale(2)
 	])
 
-	add([text('level ' + parseInt(level + 1)), pos(400, 465), scale(2)])
+	add([text('screen ' + y_screen + ', ' + x_screen), pos(400, 465), scale(2)])
 
 	const player = add([
 		sprite('link-up'),
@@ -171,11 +161,36 @@ scene('game', ({ level, score }) => {
 	player.action(() => {
 		player.resolve()
 	})
-
-	player.overlaps('next-level', () => {
+	
+	player.overlaps('screen-up', () => {
 		go('game', {
-			level: (level + 1) % maps.length,
-			score: scoreLabel.value,
+			y_screen: y_screen - 1,
+			x_screen: x_screen,
+			rupee: rupeeLabel.value,
+		})
+	})
+	
+	player.overlaps('screen-down', () => {
+		go('game', {
+			y_screen: y_screen + 1,
+			x_screen: x_screen,
+			rupee: rupeeLabel.value,
+		})
+	})
+	
+	player.overlaps('screen-left', () => {
+		go('game', {
+			y_screen: y_screen,
+			x_screen: x_screen - 1,
+			rupee: rupeeLabel.value,
+		})
+	})
+	
+	player.overlaps('screen-right', () => {
+		go('game', {
+			y_screen: y_screen,
+			x_screen: x_screen + 1,
+			rupee: rupeeLabel.value,
 		})
 	})
 
@@ -225,7 +240,7 @@ scene('game', ({ level, score }) => {
 		}
 		
 		const obj = add([sprite(sword), pos(p), 'kaboom'])
-		const attack = play("attack");
+		const attack = play('attack');
 		wait(0.2, () => {
 			destroy(obj)
 		})
@@ -245,8 +260,8 @@ scene('game', ({ level, score }) => {
 			destroy(k)
 		})
 		destroy(s)
-		scoreLabel.value++
-		scoreLabel.text = scoreLabel.value
+		rupeeLabel.value++
+		rupeeLabel.text = rupeeLabel.value
 	})
 
 	action('slicer', (s) => {
@@ -272,12 +287,12 @@ scene('game', ({ level, score }) => {
 	})
 
 	player.overlaps('dangerous', () => {
-		go('lose', { score: scoreLabel.value })
+		go('lose', { rupee: rupeeLabel.value })
 	})
 })
 
-scene('lose', ({ score }) => {
-	add([text(score, 32), origin('center'), pos(width() / 2, height() / 2)])
+scene('lose', ({ rupee }) => {
+	add([text(rupee, 32), origin('center'), pos(width() / 2, height() / 2)])
 })
 
-start('game', { level: 0, score: 0 })
+start('game', { x_screen: X_SCREEN, y_screen: Y_SCREEN, rupee: 0 })
