@@ -16,6 +16,32 @@ kaboom({
 
 // Game Logic
 loadRoot(ROOT_DIR)
+
+loadSprite('bg-beige', 'bg-beige.png')
+loadSprite('bg-grey', 'bg-grey.png')
+loadSprite('dock-brown', 'dock-brown.png')
+loadSprite('dock-green', 'dock-green.png')
+loadSprite('ladder', 'ladder.png')
+loadSprite('sand', 'sand.png')
+
+loadSprite('boulder-brown', 'boulder-brown.png')
+loadSprite('boulder-green', 'boulder-green.png')
+loadSprite('statue-brown', 'statue-brown.png')
+loadSprite('statue-green', 'statue-green.png')
+loadSprite('statue-white', 'statue-white.png')
+loadSprite('tomb', 'tomb.png')
+loadSprite('tree-brown', 'tree-brown.png')
+loadSprite('tree-green', 'tree-green.png')
+loadSprite('tree-white', 'tree-white.png')
+loadSprite('wall-brown', 'wall-brown.png')
+loadSprite('wall-green', 'wall-green.png')
+loadSprite('wall-white', 'wall-white.png')
+loadSprite('water', 'water.png')
+loadSprite('waterfall', 'waterfall.png')
+
+loadSprite('cave', 'cave.png')
+loadSprite('stairs', 'stairs.png')
+
 loadSprite('link-up', 'link-u1.png')
 loadSprite('link-down', 'link-d1.png')
 loadSprite('link-left', 'link-l1.png')
@@ -33,16 +59,6 @@ loadSprite('link-down', 'link-down.png', {
 	},
 });
 */
-
-loadSprite('bg', 'bg.png')
-
-loadSprite('boulder', 'boulder.png')
-loadSprite('tree-brown', 'tree-brown.png')
-loadSprite('tree-green', 'tree-green.png')
-loadSprite('wall-brown', 'wall-brown.png')
-loadSprite('wall-green', 'wall-green.png')
-
-loadSprite('cave', 'cave.png')
 
 loadSprite('sword-up', 'sword-u.png')
 loadSprite('sword-down', 'sword-d.png')
@@ -71,17 +87,17 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		width: 48,
 		height: 48,
 		
-		b: [sprite('boulder'), solid(), 'wall'],
+		b: [sprite('boulder-brown'), solid(), 'wall'],
 		t: [sprite('tree-brown'), solid(), 'wall'],
 		u: [sprite('tree-green'), solid(), 'wall'],
 		w: [sprite('wall-brown'), solid(), 'wall'],
 		x: [sprite('wall-green'), solid(), 'wall'],
 		
 		c: [sprite('cave'), solid(), 'door'],
-		'^': [sprite('bg'), 'screen-up'],
-		'v': [sprite('bg'), 'screen-down'],
-		'<': [sprite('bg'), 'screen-left'],
-		'>': [sprite('bg'), 'screen-right'],
+		'^': [sprite('bg-beige'), 'screen-up'],
+		'v': [sprite('bg-beige'), 'screen-down'],
+		'<': [sprite('bg-beige'), 'screen-left'],
+		'>': [sprite('bg-beige'), 'screen-right'],
 		
 		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
 		s: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
@@ -89,7 +105,7 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	
 	addLevel(maps[y_screen][x_screen], levelCfg)
 
-	add([sprite('bg'), layer('bg')])
+	add([sprite('bg-beige'), layer('bg')])
 
 	const rupeeLabel = add([
 		text('Rupees: ' + rupee),
