@@ -42,23 +42,26 @@ loadSprite('waterfall', 'waterfall.png')
 loadSprite('cave', 'cave.png')
 loadSprite('stairs', 'stairs.png')
 
-loadSprite('link-up', 'link-u1.png')
-loadSprite('link-down', 'link-d1.png')
-loadSprite('link-left', 'link-l1.png')
-loadSprite('link-right', 'link-r1.png')
+loadSprite('link-u1', 'link-u1.png')
+loadSprite('link-u2', 'link-u2.png')
 
 /*
-loadSprite('link-down', 'link-down.png', {
+loadSprite('link-d', 'link-d.png', {
 	sliceX: 2,
 	sliceY: 1,
 	anims: {
-		run: {
-			from: 0,
-			to: 1,
-		}
-	},
-});
+		idle: { from 1:, to: 1 },
+		run: { from 1:, to: 2 }
+	}
+})
 */
+
+loadSprite('link-d1', 'link-d1.png')
+loadSprite('link-d2', 'link-d2.png')
+loadSprite('link-l1', 'link-l1.png')
+loadSprite('link-l2', 'link-l2.png')
+loadSprite('link-r1', 'link-r1.png')
+loadSprite('link-r2', 'link-r2.png')
 
 loadSprite('sword-up', 'sword-u.png')
 loadSprite('sword-down', 'sword-d.png')
@@ -80,8 +83,6 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	music.loop();
 
 	layers(['bg', 'obj', 'ui'], 'obj')
-
-	
 
 	const levelCfg = {
 		width: 48,
@@ -122,11 +123,18 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	)
 
 	const player = add([
-		sprite('link-up'),
+		sprite('link-u1'),
+		/*
+		sprite('link-u1' {
+			animSpeed: 0.1,
+			frame: 300
+		},
+		*/
 		pos(360, 240),
 		{
-			dir: vec2(1, 0)
+			dir: vec2(0, -1)
 		},
+		scale(1)
 	])
 
 	player.action(() => {
@@ -164,29 +172,29 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 			rupee: rupeeLabel.value,
 		})
 	})
-
-	keyDown(['left', 'a'], () => {
-		player.changeSprite('link-left')
-		player.move(-MOVE_SPEED, 0)
-		player.dir = vec2(-1, 0)
-	})
-
-	keyDown(['right', 'd'], () => {
-		player.changeSprite('link-right')
-		player.move(MOVE_SPEED, 0)
-		player.dir = vec2(1, 0)
-	})
-
+	
 	keyDown(['up', 'w'], () => {
-		player.changeSprite('link-up')
+		player.changeSprite('link-u1')
 		player.move(0, -MOVE_SPEED)
 		player.dir = vec2(0, -1)
 	})
 
 	keyDown(['down', 's'], () => {
-		player.changeSprite('link-down')
+		player.changeSprite('link-d1')
 		player.move(0, MOVE_SPEED)
 		player.dir = vec2(0, 1)
+	})
+
+	keyDown(['left', 'a'], () => {
+		player.changeSprite('link-l1')
+		player.move(-MOVE_SPEED, 0)
+		player.dir = vec2(-1, 0)
+	})
+
+	keyDown(['right', 'd'], () => {
+		player.changeSprite('link-r1')
+		player.move(MOVE_SPEED, 0)
+		player.dir = vec2(1, 0)
 	})
 	
 	keyPress(['space', 'f'], () => {
@@ -196,26 +204,25 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	function attack(p) {
 		var sword;
 		
-		if (player.dir.x == 0) {
-			if (player.dir.y == -1) {
-				sword = 'sword-up';
-			}
-			
-			else if (player.dir.y == 1) {
-				sword = 'sword-down';
-			}
+		if (player.dir.x == 0 && player.dir.y == 1) {
+			sword = 'sword-down';
 		}
 		
 		else if (player.dir.x == -1) {
 			sword = 'sword-left';
 		}
 		
-		else {
+		else if (player.dir.x == 1) {
 			sword = 'sword-right';
+		}
+		
+		else {
+			sword = 'sword-up';
 		}
 		
 		const obj = add([sprite(sword), pos(p), 'kaboom'])
 		const attack = play('attack');
+		
 		wait(0.2, () => {
 			destroy(obj)
 		})
