@@ -4,7 +4,7 @@ const SLICER_SPEED = 200
 const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
 const Y_SCREEN = 7
-const X_SCREEN = 9
+const X_SCREEN = 11
 
 kaboom({
 	global: true,
@@ -93,15 +93,17 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		u: [sprite('tree-green'), solid(), 'wall'],
 		w: [sprite('wall-brown'), solid(), 'wall'],
 		x: [sprite('wall-green'), solid(), 'wall'],
+		a: [sprite('water'), solid(), 'wall'],
 		
 		c: [sprite('cave'), solid(), 'door'],
+		s: [sprite('stairs'), solid(), 'door'],
 		'^': [sprite('bg-beige'), 'screen-up'],
 		'v': [sprite('bg-beige'), 'screen-down'],
 		'<': [sprite('bg-beige'), 'screen-left'],
 		'>': [sprite('bg-beige'), 'screen-right'],
 		
 		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
-		s: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
+		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
 	}
 	
 	addLevel(maps[y_screen][x_screen], levelCfg)

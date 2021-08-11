@@ -27,7 +27,7 @@ const maps = [
 		'x     u  u u u >',
 		'x u uo    o    >',
 		'<     u  u u u >',
-		'x u co    o    >',
+		'x u so    o    >',
 		'x     u  u u u >',
 		'xx             >',
 		'xxuuuuuuuuuuuuuu',
@@ -39,12 +39,37 @@ const maps = [
 		'< wwww       www',
 		'<  www       www',
 		'<   ww   b    ww',
-		'<    w  b b    >',
+		'<    w  bsb    >',
 		'<        b    ww',
 		'<            www',
 		'<    w       www',
 		'wwwwww  wwwwwwww',
-		'wwwwwwwwwwwwwwww',
+		'wwwwwwwwwwwwwwww'
 	],
-	[], [], [], [], [], [] ]
+	[
+		'wwwwwwwwwwwwwwww',
+		'wwwww w  wwwwwww',
+		'wwwww     wwwwww',
+		'wwww      wwwwww',
+		'w w        w w w',
+		'<              >',
+		'w w        w w w',
+		'wwww      wwwwww',
+		'wwwww     wwwwww',
+		'wwwww w  wwwwwww',
+		'wwwwwwwwwwwwwwww'
+	],
+	[
+		'wwwwwwwwwww^^^ww',
+		'wwwwwwwwwcw   ww',
+		'wwwwwww        >',
+		'wwwwww         >',
+		'ww ww          >',
+		'<              >',
+		'ww ww  aaaaaaaaa',
+		'wwwwww aaaaaaaaa',
+		'wwwwwwwaaaaaaaaa',
+		'wwwwwwwaaaaaaaaa',
+		'wwwwwwwaaaaaaaaa'
+	], [], [], [], [] ]
 ]
