@@ -33,5 +33,18 @@ const maps = [
 		'xxuuuuuuuuuuuuuu',
 		'xxuuuuuuuuuuuuuu'
 	],
-	[], [], [], [], [], [], [] ]
+	[
+		'wwwwwwwwwwwwwwww',
+		'wwwwww  wwwwwwww',
+		'< wwww       www',
+		'<  www       www',
+		'<   ww   b    ww',
+		'<    w  b b    >',
+		'<        b    ww',
+		'<            www',
+		'<    w       www',
+		'wwwwww  wwwwwwww',
+		'wwwwwwwwwwwwwwww',
+	],
+	[], [], [], [], [], [] ]
 ]

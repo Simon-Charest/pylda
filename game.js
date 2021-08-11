@@ -4,7 +4,7 @@ const SLICER_SPEED = 200
 const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
 const Y_SCREEN = 7
-const X_SCREEN = 7
+const X_SCREEN = 9
 
 kaboom({
 	global: true,
@@ -200,6 +200,10 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	keyPress(['space', 'f'], () => {
 		attack(player.pos.add(player.dir.scale(48)))
 	})
+	
+	function walk() {
+		
+	}
 
 	function attack(p) {
 		var sword;
