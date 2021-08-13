@@ -4,7 +4,7 @@ const SLICER_SPEED = 200
 const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
 const Y_SCREEN = 7
-const X_SCREEN = 11
+const X_SCREEN = 3
 
 kaboom({
 	global: true,
