@@ -3,7 +3,7 @@ const MOVE_SPEED = 250
 const SLICER_SPEED = 200
 const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
-const Y_SCREEN = 7
+const Y_SCREEN = 6
 const X_SCREEN = 7
 
 kaboom({
@@ -112,7 +112,7 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
 	}
 	
-	addLevel(maps[y_screen][x_screen], levelCfg)
+	addLevel(overworld[y_screen][x_screen], levelCfg)
 
 	add([sprite('bg-beige'), layer('bg')])
 
