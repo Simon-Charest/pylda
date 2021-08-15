@@ -4,7 +4,7 @@ const SLICER_SPEED = 200
 const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
 const Y_SCREEN = 7
-const X_SCREEN = 3
+const X_SCREEN = 7
 
 kaboom({
 	global: true,
@@ -18,6 +18,7 @@ kaboom({
 loadRoot(ROOT_DIR)
 
 loadSprite('bg-beige', 'bg-beige.png')
+loadSprite('bg-black', 'bg-black.png')
 loadSprite('bg-grey', 'bg-grey.png')
 loadSprite('dock-brown', 'dock-brown.png')
 loadSprite('dock-green', 'dock-green.png')
@@ -88,7 +89,12 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		width: 48,
 		height: 48,
 		
+		//' ': [sprite('bg-beige')],
+		e: [sprite('dock-brown')],
+		
 		b: [sprite('boulder-brown'), solid(), 'wall'],
+		d: [sprite('boulder-green'), solid(), 'wall'],
+		r: [sprite('statue-brown'), solid(), 'wall'],
 		t: [sprite('tree-brown'), solid(), 'wall'],
 		u: [sprite('tree-green'), solid(), 'wall'],
 		w: [sprite('wall-brown'), solid(), 'wall'],
@@ -97,10 +103,10 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		
 		c: [sprite('cave'), solid(), 'door'],
 		s: [sprite('stairs'), solid(), 'door'],
-		'^': [sprite('bg-beige'), 'screen-up'],
-		'v': [sprite('bg-beige'), 'screen-down'],
-		'<': [sprite('bg-beige'), 'screen-left'],
-		'>': [sprite('bg-beige'), 'screen-right'],
+		'^': [sprite('bg-black'), 'screen-up'],
+		'v': [sprite('bg-black'), 'screen-down'],
+		'<': [sprite('bg-black'), 'screen-left'],
+		'>': [sprite('bg-black'), 'screen-right'],
 		
 		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
 		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
@@ -112,7 +118,7 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 
 	const rupeeLabel = add([
 		text('Rupees: ' + rupee),
-		pos(25, 575),
+		pos(48, 605),
 		layer('ui'),
 		{
 			value: rupee
@@ -121,7 +127,7 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	])
 
 	add(
-		[text('Screen: y=' + y_screen + ',x=' + x_screen + ''), pos(25, 550), scale(2)]
+		[text('Screen: y=' + y_screen + ',x=' + x_screen + ''), pos(48, 580), scale(2)]
 	)
 
 	const player = add([
@@ -202,10 +208,6 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	keyPress(['space', 'f'], () => {
 		attack(player.pos.add(player.dir.scale(48)))
 	})
-	
-	function walk() {
-		
-	}
 
 	function attack(p) {
 		var sword;
