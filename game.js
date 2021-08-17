@@ -1,20 +1,25 @@
-// Speeds
-const MOVE_SPEED = 250
-const SLICER_SPEED = 200
-const OCTOROK_SPEED = 120
 const ROOT_DIR = 'http://localhost/resource/'
-const Y_SCREEN = 6
-const X_SCREEN = 7
+const SCREEN_X = 7
+const SCREEN_Y = 7
+const SIZE = 48
+const POS_X = 8.5 * SIZE
+const POS_Y = 6 * SIZE
+const SCALE_GAME = 1
+const SCALE_PLAYER = 1
+const SCALE_TEXT = 2
+const MOVE_SPEED = 250
+const OCTOROK_SPEED = 120
+const SLICER_SPEED = 200
 
 kaboom({
 	global: true,
 	fullscreen: true,
-	scale: 1,
+	scale: SCALE_GAME,
 	debug: true,
 	clearColor: [1, 0.86, 0.66, 1]
 })
 
-// Game Logic
+// Game logic
 loadRoot(ROOT_DIR)
 
 loadSprite('bg-beige', 'bg-beige.png')
@@ -76,18 +81,24 @@ loadSprite('octorok-left', 'octorok-l1.png')
 loadSprite('octorok-right', 'octorok-r1.png')
 loadSprite('slicer', 'sword-u.png')
 
-loadSound('music', 'overworld.mp3');
-loadSound('attack', 'LOZ_Sword_Slash.wav');
+loadSound('music', 'overworld.mp3')
+loadSound('attack', 'LOZ_Sword_Slash.wav')
 
-scene('game', ({ y_screen, x_screen, rupee }) => {
-	const music = play('music');
-	music.loop();
+scene('game', ({
+	screen_x,
+	screen_y,
+	pos_x,
+	pos_y,
+	rupee
+}) => {
+	const music = play('music')
+	music.loop()
 
 	layers(['bg', 'obj', 'ui'], 'obj')
 
 	const levelCfg = {
-		width: 48,
-		height: 48,
+		height: SIZE,
+		width: SIZE,
 		
 		//' ': [sprite('bg-beige')],
 		e: [sprite('dock-brown')],
@@ -112,72 +123,73 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
 	}
 	
-	addLevel(overworld[y_screen][x_screen], levelCfg)
+	addLevel(overworld[screen_y][screen_x], levelCfg)
 
 	add([sprite('bg-beige'), layer('bg')])
+	
+	// Display scoreboard
+	
+	add([
+		text('Screen: x=' + screen_x + ', y=' + screen_y + ''),
+		pos(SIZE, 12.1 * SIZE),
+		scale(SCALE_TEXT)
+	])
 
 	const rupeeLabel = add([
 		text('Rupees: ' + rupee),
-		pos(48, 605),
+		pos(SIZE, 12.6 * SIZE),
 		layer('ui'),
-		{
-			value: rupee
-		},
-		scale(2)
+		{ value: rupee },
+		scale(SCALE_TEXT)
 	])
-
-	add(
-		[text('Screen: y=' + y_screen + ',x=' + x_screen + ''), pos(48, 580), scale(2)]
-	)
-
+	
+	// Display player
 	const player = add([
 		sprite('link-u1'),
-		/*
-		sprite('link-u1' {
-			animSpeed: 0.1,
-			frame: 300
-		},
-		*/
-		pos(360, 240),
-		{
-			dir: vec2(0, -1)
-		},
-		scale(1)
+		pos(pos_x, pos_y),
+		{ dir: vec2(0, -1) },
+		scale(SCALE_PLAYER)
 	])
 
-	player.action(() => {
-		player.resolve()
-	})
+	player.action(() => { player.resolve() })
 	
 	player.overlaps('screen-up', () => {
 		go('game', {
-			y_screen: y_screen - 1,
-			x_screen: x_screen,
-			rupee: rupeeLabel.value,
+			screen_x: screen_x,
+			screen_y: screen_y - 1,
+			pos_x: player.pos.x,
+			pos_y: 11 * SIZE,
+			rupee: rupeeLabel.value
 		})
 	})
 	
 	player.overlaps('screen-down', () => {
 		go('game', {
-			y_screen: y_screen + 1,
-			x_screen: x_screen,
-			rupee: rupeeLabel.value,
+			screen_x: screen_x,
+			screen_y: screen_y + 1,
+			pos_x: player.pos.x,
+			pos_y: 1 * SIZE,
+			rupee: rupeeLabel.value
 		})
 	})
 	
 	player.overlaps('screen-left', () => {
 		go('game', {
-			y_screen: y_screen,
-			x_screen: x_screen - 1,
-			rupee: rupeeLabel.value,
+			screen_x: screen_x - 1,
+			screen_y: screen_y,
+			pos_x: 16 * SIZE,
+			pos_y: player.pos.y,
+			rupee: rupeeLabel.value
 		})
 	})
 	
 	player.overlaps('screen-right', () => {
 		go('game', {
-			y_screen: y_screen,
-			x_screen: x_screen + 1,
-			rupee: rupeeLabel.value,
+			screen_x: screen_x + 1,
+			screen_y: screen_y,
+			pos_x: 1 * SIZE,
+			pos_y: player.pos.y,
+			rupee: rupeeLabel.value
 		})
 	})
 	
@@ -206,30 +218,30 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 	})
 	
 	keyPress(['space', 'f'], () => {
-		attack(player.pos.add(player.dir.scale(48)))
+		attack(player.pos.add(player.dir.scale(SIZE)))
 	})
 
 	function attack(p) {
-		var sword;
+		var sword
 		
 		if (player.dir.x == 0 && player.dir.y == 1) {
-			sword = 'sword-down';
+			sword = 'sword-down'
 		}
 		
 		else if (player.dir.x == -1) {
-			sword = 'sword-left';
+			sword = 'sword-left'
 		}
 		
 		else if (player.dir.x == 1) {
-			sword = 'sword-right';
+			sword = 'sword-right'
 		}
 		
 		else {
-			sword = 'sword-up';
+			sword = 'sword-up'
 		}
 		
 		const obj = add([sprite(sword), pos(p), 'kaboom'])
-		const attack = play('attack');
+		const attack = play('attack')
 		
 		wait(0.2, () => {
 			destroy(obj)
@@ -242,11 +254,9 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 
 	collides('kaboom', 'octorok', (k,s) => {
 		camShake(4)
-		wait(1, () => {
-			destroy(k)
-		})
+		wait(1, () => { destroy(k) })
 		destroy(s)
-		rupeeLabel.value++
+		rupeeLabel.value ++
 		rupeeLabel.text = 'Rupees: ' + rupeeLabel.value
 	})
 
@@ -286,10 +296,21 @@ scene('game', ({ y_screen, x_screen, rupee }) => {
 })
 
 scene('lose', ({ rupee }) => {
-	add([text(rupee, 32), origin('center'), pos(width() / 2, height() / 2)])
+	add([
+		text(rupee, 32),
+		origin('center'),
+		pos(width() / 2,
+		height() / 2)
+	])
 })
 
-start('game', { x_screen: X_SCREEN, y_screen: Y_SCREEN, rupee: 0 })
+start('game', {
+	screen_x: SCREEN_X,
+	screen_y: SCREEN_Y,
+	pos_x: POS_X,
+	pos_y: POS_Y,
+	rupee: 0
+})
 
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
