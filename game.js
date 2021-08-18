@@ -1,5 +1,6 @@
 const ROOT_DIR = 'http://localhost/resource/'
-const SCREEN_X = 7
+const HEART = 3.0
+const SCREEN_X = 8
 const SCREEN_Y = 7
 const SIZE = 48
 const POS_X = 8.5 * SIZE
@@ -89,6 +90,7 @@ scene('game', ({
 	screen_y,
 	pos_x,
 	pos_y,
+	heart,
 	rupee
 }) => {
 	const music = play('music')
@@ -129,67 +131,72 @@ scene('game', ({
 	
 	// Display scoreboard
 	
-	add([
-		text('Screen: x=' + screen_x + ', y=' + screen_y + ''),
-		pos(SIZE, 12.1 * SIZE),
-		scale(SCALE_TEXT)
-	])
-
 	const rupeeLabel = add([
-		text('Rupees: ' + rupee),
-		pos(SIZE, 12.6 * SIZE),
+		text('Hearts: ' + heart.toFixed(1) + ' | Rupees: ' + rupee),
+		pos(SIZE, 12.1 * SIZE),
 		layer('ui'),
 		{ value: rupee },
 		scale(SCALE_TEXT)
 	])
 	
-	// Display player
+	add([
+		text('Screen: x=' + screen_x + ', y=' + screen_y),
+		pos(SIZE, 12.6 * SIZE),
+		scale(SCALE_TEXT)
+	])
+
+	// Create player
 	const player = add([
 		sprite('link-u1'),
 		pos(pos_x, pos_y),
 		{ dir: vec2(0, -1) },
-		scale(SCALE_PLAYER)
+		scale(SCALE_PLAYER),
+		'killable'
 	])
 
 	player.action(() => { player.resolve() })
 	
 	player.overlaps('screen-up', () => {
 		go('game', {
+			heart: heart,
+			rupee: rupeeLabel.value,
 			screen_x: screen_x,
 			screen_y: screen_y - 1,
 			pos_x: player.pos.x,
-			pos_y: 11 * SIZE,
-			rupee: rupeeLabel.value
+			pos_y: 11 * SIZE
 		})
 	})
 	
 	player.overlaps('screen-down', () => {
 		go('game', {
+			heart: heart,
+			rupee: rupeeLabel.value,
 			screen_x: screen_x,
 			screen_y: screen_y + 1,
 			pos_x: player.pos.x,
-			pos_y: 1 * SIZE,
-			rupee: rupeeLabel.value
+			pos_y: 1 * SIZE
 		})
 	})
 	
 	player.overlaps('screen-left', () => {
 		go('game', {
+			heart: heart,
+			rupee: rupeeLabel.value,
 			screen_x: screen_x - 1,
 			screen_y: screen_y,
 			pos_x: 16 * SIZE,
-			pos_y: player.pos.y,
-			rupee: rupeeLabel.value
+			pos_y: player.pos.y
 		})
 	})
 	
 	player.overlaps('screen-right', () => {
 		go('game', {
+			heart: heart,
+			rupee: rupeeLabel.value,
 			screen_x: screen_x + 1,
 			screen_y: screen_y,
 			pos_x: 1 * SIZE,
-			pos_y: player.pos.y,
-			rupee: rupeeLabel.value
+			pos_y: player.pos.y
 		})
 	})
 	
@@ -257,7 +264,7 @@ scene('game', ({
 		wait(1, () => { destroy(k) })
 		destroy(s)
 		rupeeLabel.value ++
-		rupeeLabel.text = 'Rupees: ' + rupeeLabel.value
+		rupeeLabel.text = 'Hearts: ' + heart.toFixed(1) + ' | Rupees: ' + rupeeLabel.value
 	})
 
 	action('slicer', (s) => {
@@ -290,8 +297,18 @@ scene('game', ({
 		s.dir = -s.dir
 	})
 
-	player.overlaps('dangerous', () => {
-		go('lose', { rupee: rupeeLabel.value })
+	player.overlaps('dangerous', (d) => {
+		if (player.is('killable')) {
+			// TODO: Bump and set invincible for 2 seconds
+			destroy(d)
+			
+			heart -= 0.5
+			rupeeLabel.text = 'Hearts: ' + heart.toFixed(1) + ' | Rupees: ' + rupeeLabel.value
+		}
+		
+		if (heart <= 0) {
+			go('lose', { rupee: rupeeLabel.value })
+		}
 	})
 })
 
@@ -299,8 +316,7 @@ scene('lose', ({ rupee }) => {
 	add([
 		text(rupee, 32),
 		origin('center'),
-		pos(width() / 2,
-		height() / 2)
+		pos(width() / 2, height() / 2)
 	])
 })
 
@@ -309,6 +325,7 @@ start('game', {
 	screen_y: SCREEN_Y,
 	pos_x: POS_X,
 	pos_y: POS_Y,
+	heart: HEART,
 	rupee: 0
 })
 
