@@ -23,10 +23,10 @@ function getLevelConfiguration()
 		
 		c: [sprite('cave'), solid(), 'door'],
 		s: [sprite('stairs'), solid(), 'door'],
-		'^': [sprite('bg-black'), 'screen-up'],
-		'v': [sprite('bg-black'), 'screen-down'],
-		'<': [sprite('bg-black'), 'screen-left'],
-		'>': [sprite('bg-black'), 'screen-right'],
+		'^': [sprite('bg-black'), solid(), 'wall', 'screen-up'],
+		'v': [sprite('bg-black'), solid(), 'wall', 'screen-down'],
+		'<': [sprite('bg-black'), solid(), 'wall', 'screen-left'],
+		'>': [sprite('bg-black'), solid(), 'wall', 'screen-right'],
 		
 		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
 		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
@@ -170,8 +170,7 @@ function manageKeys(player)
 
 function playMusic(id = 'music')
 {
-	if (music == null)
-	{
+	if (music == null) {
 		music = play(id)
 		music.loop()
 	}

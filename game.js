@@ -1,7 +1,8 @@
 const ROOT_DIR = 'http://localhost/resource/'
 const HEART = 3.0
-const SCREEN_X = 8
-const SCREEN_Y = 7
+const MAP_X = 7
+const MAP_Y = 7
+const MAP_Z = 0
 const SIZE = 48
 const POS_X = 8.5 * SIZE
 const POS_Y = 6 * SIZE
@@ -28,8 +29,9 @@ loadSprites(ROOT_DIR)
 
 start('game',
 	{
-		screen_x: SCREEN_X,
-		screen_y: SCREEN_Y,
+		map_x: MAP_X,
+		map_y: MAP_Y,
+		map_z: MAP_Z,
 		pos_x: POS_X,
 		pos_y: POS_Y,
 		heart: HEART,
@@ -39,8 +41,9 @@ start('game',
 
 scene('game', (
 	{
-		screen_x,
-		screen_y,
+		map_x,
+		map_y,
+		map_z,
 		pos_x,
 		pos_y,
 		heart,
@@ -52,7 +55,7 @@ scene('game', (
 	layers(['bg', 'obj', 'ui'], 'obj')
 
 	// Load level
-	addLevel(overworld[screen_y][screen_x], getLevelConfiguration())
+	addLevel(maps[map_y][map_x], getLevelConfiguration())
 
 	addBackground()
 	
@@ -67,7 +70,7 @@ scene('game', (
 	])
 	
 	add([
-		text('Screen: x=' + screen_x + ', y=' + screen_y),
+		text('Map: x=' + map_x + ', y=' + map_y + ', z=' + map_z),
 		pos(SIZE, 12.6 * SIZE),
 		scale(SCALE_TEXT)
 	])
@@ -83,45 +86,49 @@ scene('game', (
 
 	player.action(() => { player.resolve() })
 	
-	player.overlaps('screen-up', () => {
+	player.collides('screen-up', () => {
 		go('game', {
 			heart: heart,
 			rupee: rupeeLabel.value,
-			screen_x: screen_x,
-			screen_y: screen_y - 1,
+			map_x: map_x,
+			map_y: map_y - 1,
+			map_z: map_z,
 			pos_x: player.pos.x,
 			pos_y: 11 * SIZE
 		})
 	})
 	
-	player.overlaps('screen-down', () => {
+	player.collides('screen-down', () => {
 		go('game', {
 			heart: heart,
 			rupee: rupeeLabel.value,
-			screen_x: screen_x,
-			screen_y: screen_y + 1,
+			map_x: map_x,
+			map_y: map_y + 1,
+			map_z: map_z,
 			pos_x: player.pos.x,
 			pos_y: 1 * SIZE
 		})
 	})
 	
-	player.overlaps('screen-left', () => {
+	player.collides('screen-left', () => {
 		go('game', {
 			heart: heart,
 			rupee: rupeeLabel.value,
-			screen_x: screen_x - 1,
-			screen_y: screen_y,
+			map_x: map_x - 1,
+			map_y: map_y,
+			map_z: map_z,
 			pos_x: 16 * SIZE,
 			pos_y: player.pos.y
 		})
 	})
 	
-	player.overlaps('screen-right', () => {
+	player.collides('screen-right', () => {
 		go('game', {
 			heart: heart,
 			rupee: rupeeLabel.value,
-			screen_x: screen_x + 1,
-			screen_y: screen_y,
+			map_x: map_x + 1,
+			map_y: map_y,
+			map_z: map_z,
 			pos_x: 1 * SIZE,
 			pos_y: player.pos.y
 		})
@@ -130,7 +137,9 @@ scene('game', (
 	manageKeys(player)
 
 	player.collides('door', (d) => {
-		destroy(d)
+		if (map_x == 7 && map_y == 7 && map_z == 0)
+		{
+		}
 	})
 
 	collides('kaboom', 'octorok', (k,s) => {
@@ -149,6 +158,7 @@ scene('game', (
 		s.dir = -s.dir
 	})
 
+	// TODO: Fix monsters' collision detection
 	action('octorok', (s) => {
 		if (s.axis == 0) {
 			s.move(s.dir * OCTOROK_SPEED, 0)
