@@ -1,11 +1,13 @@
 const ROOT_DIR = 'http://localhost/resource/'
-const HEART = 3.0
 const MAP_X = 7
 const MAP_Y = 7
 const MAP_Z = 0
 const SIZE = 48
-const POS_X = 8.5 * SIZE
-const POS_Y = 6 * SIZE
+const POS_X_CENTER = 8.5 * SIZE
+const POS_Y_CENTER = 6 * SIZE
+const POS_Y_BOTTOM = 11 * SIZE
+const HEART = 3.0
+const RUPEE = 0
 const SCALE_GAME = 1
 const SCALE_PLAYER = 1
 const SCALE_TEXT = 2
@@ -32,10 +34,10 @@ start('game',
 		map_x: MAP_X,
 		map_y: MAP_Y,
 		map_z: MAP_Z,
-		pos_x: POS_X,
-		pos_y: POS_Y,
+		pos_x: POS_X_CENTER,
+		pos_y: POS_Y_CENTER,
 		heart: HEART,
-		rupee: 0
+		rupee: RUPEE
 	}
 )
 
@@ -55,7 +57,7 @@ scene('game', (
 	layers(['bg', 'obj', 'ui'], 'obj')
 
 	// Load level
-	addLevel(maps[map_y][map_x], getLevelConfiguration())
+	addLevel(maps[map_z][map_y][map_x], getLevelConfiguration())
 
 	addBackground()
 	
@@ -135,10 +137,48 @@ scene('game', (
 	})
 	
 	manageKeys(player)
+	
+	// Door management
 
 	player.collides('door', (d) => {
 		if (map_x == 7 && map_y == 7 && map_z == 0)
 		{
+			go('game', {
+				heart: heart,
+				rupee: rupeeLabel.value,
+				map_x: 0,
+				map_y: 0,
+				map_z: 2,
+				pos_x: POS_X_CENTER,
+				pos_y: POS_Y_BOTTOM
+			})
+		}
+		
+		else if (map_x == 0 && map_y == 0 && map_z == 2)
+		{
+			// TODO: Fix this
+			go('game', {
+				heart: heart,
+				rupee: rupeeLabel.value,
+				map_x: 7,
+				map_y: 7,
+				map_z: 0,
+				pos_x: 5,
+				pos_y: 3
+			})
+		}
+		
+		else if (map_x == 7 && map_y == 3 && map_z == 0)
+		{
+			go('game', {
+				heart: heart,
+				rupee: rupeeLabel.value,
+				map_x: 3,
+				map_y: 7,
+				map_z: 1,
+				pos_x: POS_X_CENTER,
+				pos_y: POS_Y_BOTTOM
+			})
 		}
 	})
 
