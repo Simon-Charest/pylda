@@ -15,11 +15,13 @@ const MOVE_SPEED = 250
 const OCTOROK_SPEED = 120
 const SLICER_SPEED = 200
 const BEIGE_COLOR = [1, 0.86, 0.66, 1]
+const BLACK_COLOR = [0, 0, 0, 1]
 
 let music = null
 
 kaboom({
 	clearColor: BEIGE_COLOR,
+	crisp: true,
 	debug: true,
 	fullscreen: true,
 	global: true,
@@ -141,6 +143,7 @@ scene('game', (
 	// Door management
 
 	player.collides('door', (d) => {
+		// Sword cave entrance
 		if (map_x == 7 && map_y == 7 && map_z == 0)
 		{
 			go('game', {
@@ -154,6 +157,7 @@ scene('game', (
 			})
 		}
 		
+		// Sword cave exit
 		else if (map_x == 0 && map_y == 0 && map_z == 2)
 		{
 			// TODO: Fix this
@@ -168,6 +172,7 @@ scene('game', (
 			})
 		}
 		
+		// First dungeon entrance
 		else if (map_x == 7 && map_y == 3 && map_z == 0)
 		{
 			go('game', {
