@@ -1,4 +1,8 @@
 const ROOT_DIR = 'http://localhost/resource/'
+const AUDIO_DIR = ROOT_DIR + 'audio/'
+const ENEMY_DIR = ROOT_DIR + 'enemy/'
+const PLAYER_DIR = ROOT_DIR + 'player/'
+const TILE_DIR = ROOT_DIR + 'tile/'
 const MAP_X = 7
 const MAP_Y = 7
 const MAP_Z = 0
@@ -13,7 +17,7 @@ const SCALE_PLAYER = 1
 const SCALE_TEXT = 2
 const MOVE_SPEED = 250
 const OCTOROK_SPEED = 120
-const SLICER_SPEED = 200
+const BLADE_TRAP_SPEED = 200
 const BEIGE_COLOR = [1, 0.86, 0.66, 1]
 const BLACK_COLOR = [0, 0, 0, 1]
 
@@ -28,8 +32,10 @@ kaboom({
 	scale: SCALE_GAME
 })
 
-loadSounds(ROOT_DIR)
-loadSprites(ROOT_DIR)
+loadAudio(AUDIO_DIR)
+loadEnemy(ENEMY_DIR)
+loadPlayer(PLAYER_DIR)
+loadTile(TILE_DIR)
 
 start('game',
 	{
@@ -54,6 +60,11 @@ scene('game', (
 		rupee
 	}
 ) => {
+	// TODO
+	//saveGame()
+	//loadGame()
+	//deleteGame()
+	
 	playMusic()
 	
 	layers(['bg', 'obj', 'ui'], 'obj')
@@ -195,11 +206,11 @@ scene('game', (
 		rupeeLabel.text = 'Hearts: ' + heart.toFixed(1) + ' | Rupees: ' + rupeeLabel.value
 	})
 
-	action('slicer', (s) => {
-		s.move(s.dir * SLICER_SPEED, 0)
+	action('blade_trap', (s) => {
+		s.move(s.dir * BLADE_TRAP_SPEED, 0)
 	})
 
-	collides('slicer', 'wall', (s) => {
+	collides('blade_trap', 'wall', (s) => {
 		s.dir = -s.dir
 	})
 

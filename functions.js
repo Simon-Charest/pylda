@@ -3,6 +3,17 @@ function addBackground()
 	add([sprite('bg-beige'), layer('bg')])
 }
 
+function doDebug(string = null, exit = true)
+{
+	if (string) {
+		console.log(string)
+	}
+	
+	if (exit) {
+		throw '';
+	}
+}
+
 function getLevelConfiguration()
 {
 	return {
@@ -29,7 +40,7 @@ function getLevelConfiguration()
 		'>': [sprite('bg-black'), solid(), 'wall', 'screen-right'],
 		
 		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
-		l: [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous']
+		l: [sprite('blade_trap'), 'blade_trap', { dir: -1 }, 'dangerous']
 	}
 }
 
@@ -38,15 +49,54 @@ function getRandomInt(min, max)
 	return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function loadSounds(root)
+function loadAudio(directory)
 {
-	loadRoot(root)
+	loadRoot(directory)
 	
 	loadSound('music', 'overworld.mp3')
 	loadSound('attack', 'LOZ_Sword_Slash.wav')
 }
 
-function loadSprites(root)
+function loadEnemy(directory)
+{
+	loadRoot(directory)
+	
+	loadSprite('blade_trap', 'blade_trap.png')
+	loadSprite('octorok', 'octorok-red.png')
+}
+
+function loadPlayer(directory)
+{
+	loadRoot(directory)
+	
+	loadSprite('link-u1', 'link-u1.png')
+	loadSprite('link-u2', 'link-u2.png')
+
+	/*
+	loadSprite('link-d', 'link-d.png', {
+		sliceX: 2,
+		sliceY: 1,
+		anims: {
+			idle: { from 1:, to: 1 },
+			run: { from 1:, to: 2 }
+		}
+	})
+	*/
+
+	loadSprite('link-d1', 'link-d1.png')
+	loadSprite('link-d2', 'link-d2.png')
+	loadSprite('link-l1', 'link-l1.png')
+	loadSprite('link-l2', 'link-l2.png')
+	loadSprite('link-r1', 'link-r1.png')
+	loadSprite('link-r2', 'link-r2.png')
+
+	loadSprite('sword-up', 'sword-u.png')
+	loadSprite('sword-down', 'sword-d.png')
+	loadSprite('sword-left', 'sword-l.png')
+	loadSprite('sword-right', 'sword-r.png')
+}
+
+function loadTile(root)
 {
 	loadRoot(root)
 
@@ -75,39 +125,6 @@ function loadSprites(root)
 
 	loadSprite('cave', 'cave.png')
 	loadSprite('stairs', 'stairs.png')
-
-	loadSprite('link-u1', 'link-u1.png')
-	loadSprite('link-u2', 'link-u2.png')
-
-	/*
-	loadSprite('link-d', 'link-d.png', {
-		sliceX: 2,
-		sliceY: 1,
-		anims: {
-			idle: { from 1:, to: 1 },
-			run: { from 1:, to: 2 }
-		}
-	})
-	*/
-
-	loadSprite('link-d1', 'link-d1.png')
-	loadSprite('link-d2', 'link-d2.png')
-	loadSprite('link-l1', 'link-l1.png')
-	loadSprite('link-l2', 'link-l2.png')
-	loadSprite('link-r1', 'link-r1.png')
-	loadSprite('link-r2', 'link-r2.png')
-
-	loadSprite('sword-up', 'sword-u.png')
-	loadSprite('sword-down', 'sword-d.png')
-	loadSprite('sword-left', 'sword-l.png')
-	loadSprite('sword-right', 'sword-r.png')
-
-	loadSprite('octorok', 'octorok-d1.png')
-	loadSprite('octorok-up', 'octorok-u1.png')
-	loadSprite('octorok-down', 'octorok-d1.png')
-	loadSprite('octorok-left', 'octorok-l1.png')
-	loadSprite('octorok-right', 'octorok-r1.png')
-	loadSprite('slicer', 'sword-u.png')
 }
 
 function manageKeys(player)
@@ -174,4 +191,46 @@ function playMusic(id = 'music')
 		music = play(id)
 		music.loop()
 	}
+}
+
+function deleteGame(game = "TheLegendOfZelda", x = "", y = "", expires = 0, sameSite = "", secure_ = "")
+{
+	let cookie = "game=" + game
+		+ ";x=" + x
+		+ ";y=" + y
+		+ ";Expires=" + expires
+		+ ";SameSite=" + sameSite
+		+ ";" + secure_
+		+ ";"
+		
+	document.cookie = cookie
+	
+	console.log(cookie)
+	console.log("deleteGame.end")
+}
+
+function loadGame(game = "TheLegendOfZelda")
+{
+	let cookie = document.cookie.split(";")
+	
+	console.log(cookie);
+	console.log("loadGame.end")
+	
+	return cookie
+}
+
+function saveGame(game = "TheLegendOfZelda", x = 7, y = 7, expires = 2147483647, sameSite = "Strict", secure_ = "Secure")
+{
+	let cookie = "game=" + game
+		+ ";x=" + x
+		+ ";y=" + y
+		+ ";Expires=" + expires
+		+ ";SameSite=" + sameSite
+		+ ";" + secure_
+		+ ";"
+		
+	document.cookie = cookie
+	
+	console.log(cookie)
+	console.log("saveGame.end")
 }
