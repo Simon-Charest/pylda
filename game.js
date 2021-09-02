@@ -2,7 +2,9 @@ const ROOT_DIR = 'http://localhost/resource/'
 const AUDIO_DIR = ROOT_DIR + 'audio/'
 const ENEMY_DIR = ROOT_DIR + 'enemy/'
 const PLAYER_DIR = ROOT_DIR + 'player/'
+const DOOR_DIR = ROOT_DIR + 'door/'
 const TILE_DIR = ROOT_DIR + 'tile/'
+const WALL_DIR = ROOT_DIR + 'wall/'
 const MAP_X = 7
 const MAP_Y = 7
 const MAP_Z = 0
@@ -35,7 +37,9 @@ kaboom({
 loadAudio(AUDIO_DIR)
 loadEnemy(ENEMY_DIR)
 loadPlayer(PLAYER_DIR)
+loadDoor(DOOR_DIR)
 loadTile(TILE_DIR)
+loadWall(WALL_DIR)
 
 start('game',
 	{

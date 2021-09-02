@@ -96,9 +96,17 @@ function loadPlayer(directory)
 	loadSprite('sword-right', 'sword-r.png')
 }
 
-function loadTile(root)
+function loadDoor(directory)
 {
-	loadRoot(root)
+	loadRoot(directory)
+
+	loadSprite('cave', 'cave.png')
+	loadSprite('stairs', 'stairs.png')
+}
+
+function loadTile(directory)
+{
+	loadRoot(directory)
 
 	loadSprite('bg-beige', 'bg-beige.png')
 	loadSprite('bg-black', 'bg-black.png')
@@ -107,12 +115,18 @@ function loadTile(root)
 	loadSprite('dock-green', 'dock-green.png')
 	loadSprite('ladder', 'ladder.png')
 	loadSprite('sand', 'sand.png')
+}
+
+function loadWall(directory)
+{
+	loadRoot(directory)
 
 	loadSprite('boulder-brown', 'boulder-brown.png')
 	loadSprite('boulder-green', 'boulder-green.png')
 	loadSprite('statue-brown', 'statue-brown.png')
 	loadSprite('statue-green', 'statue-green.png')
 	loadSprite('statue-white', 'statue-white.png')
+	loadSprite('stone_statue', 'stone_statue.png')
 	loadSprite('tomb', 'tomb.png')
 	loadSprite('tree-brown', 'tree-brown.png')
 	loadSprite('tree-green', 'tree-green.png')
@@ -122,9 +136,6 @@ function loadTile(root)
 	loadSprite('wall-white', 'wall-white.png')
 	loadSprite('water', 'water.png')
 	loadSprite('waterfall', 'waterfall.png')
-
-	loadSprite('cave', 'cave.png')
-	loadSprite('stairs', 'stairs.png')
 }
 
 function manageKeys(player)
