@@ -20,27 +20,83 @@ function getLevelConfiguration()
 		height: SIZE,
 		width: SIZE,
 		
-		//' ': [sprite('bg-beige')],
-		e: [sprite('dock-brown')],
+		// Tiles
+		e: [sprite('bg-beige')],
+		f: [sprite('bg-black')],
+		g: [sprite('bg-grey')],
+		h: [sprite('dock-brown')],
+		i: [sprite('dock-green')],
+		j: [sprite('ladder')],
+		k: [sprite('sand')],
 		
-		b: [sprite('boulder-brown'), solid(), 'wall'],
-		d: [sprite('boulder-green'), solid(), 'wall'],
-		r: [sprite('statue-brown'), solid(), 'wall'],
-		t: [sprite('tree-brown'), solid(), 'wall'],
-		u: [sprite('tree-green'), solid(), 'wall'],
-		w: [sprite('wall-brown'), solid(), 'wall'],
-		x: [sprite('wall-green'), solid(), 'wall'],
-		a: [sprite('water'), solid(), 'wall'],
+		// Walls
+		l: [sprite('boulder-brown'), solid(), 'wall'],
+		m: [sprite('boulder-green'), solid(), 'wall'],
+		n: [sprite('statue-brown'), solid(), 'wall'],
+		o: [sprite('statue-green'), solid(), 'wall'],
+		p: [sprite('statue-white'), solid(), 'wall'],
+		q: [sprite('stone_statue'), solid(), 'wall'],
+		r: [sprite('tomb'), solid(), 'wall'],
+		s: [sprite('tree-brown'), solid(), 'wall'],
+		t: [sprite('tree-green'), solid(), 'wall'],
+		u: [sprite('tree-white'), solid(), 'wall'],
+		v: [sprite('wall-brown'), solid(), 'wall'],
+		w: [sprite('wall-green'), solid(), 'wall'],
+		x: [sprite('wall-white'), solid(), 'wall'],
+		y: [sprite('water'), solid(), 'wall'],
+		z: [sprite('waterfall'), solid(), 'wall'],
 		
-		c: [sprite('cave'), solid(), 'door'],
-		s: [sprite('stairs'), solid(), 'door'],
+		// Doors
+		'!': [sprite('cave'), solid(), 'door'],
+		'"': [sprite('stairs'), solid(), 'door'],
+		
+		// Screen overlaps
 		'^': [sprite('bg-black'), solid(), 'wall', 'screen-up'],
-		'v': [sprite('bg-black'), solid(), 'wall', 'screen-down'],
+		'_': [sprite('bg-black'), solid(), 'wall', 'screen-down'],
 		'<': [sprite('bg-black'), solid(), 'wall', 'screen-left'],
 		'>': [sprite('bg-black'), solid(), 'wall', 'screen-right'],
 		
-		o: [sprite('octorok'), 'dangerous', 'octorok', { dir: -1, timer: 0 }],
-		l: [sprite('blade_trap'), 'blade_trap', { dir: -1 }, 'dangerous']
+		// Enemies
+		0: [sprite('armos'), 'armos', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		1: [sprite('blade_trap'), 'blade_trap', 'dangerous', { dir: -1 }],
+		2: [sprite('boulder'), 'boulder', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		3: [sprite('bubble-blue'), 'bubble', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		4: [sprite('bubble-red'), 'bubble', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		5: [sprite('bubble-white'), 'bubble', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		6: [sprite('darknut-blue'), 'darknut', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		7: [sprite('darknut-red'), 'darknut', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		8: [sprite('gel'), 'gel', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		9: [sprite('ghini'), 'ghini', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		A: [sprite('gibdo'), 'gibdo', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		B: [sprite('goriya-blue'), 'goriya', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		C: [sprite('goriya-red'), 'goriya', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		D: [sprite('keese'), 'keese', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		E: [sprite('lanmola-blue'), 'lanmola', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		F: [sprite('lanmola-red'), 'lanmola', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		G: [sprite('leever-blue'), 'leever', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		H: [sprite('leever-red'), 'leever', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		I: [sprite('like_like'), 'like_like', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		J: [sprite('lynel-blue'), 'lynel', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		K: [sprite('lynel-red'), 'lynel', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		L: [sprite('moblin-blue'), 'moblin', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		M: [sprite('moblin-red'), 'moblin', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		N: [sprite('moldorm'), 'moldorm', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		O: [sprite('octorok-blue'), 'octorok', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		P: [sprite('octorok-red'), 'octorok', 'dangerous', { dir: -1, timer: 0, heart: 0.5 }],
+		Q: [sprite('patra'), 'patra', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		R: [sprite('peahat'), 'peahat', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		S: [sprite('pols_voice'), 'pols_voice', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		T: [sprite('river_zora'), 'river_zora', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		U: [sprite('rope-blue'), 'rope', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		V: [sprite('rope-red'), 'rope', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		W: [sprite('stalfos'), 'stalfos', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		X: [sprite('tektite-blue'), 'tektite', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		Y: [sprite('tektite-red'), 'tektite', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		Z: [sprite('vire'), 'vire', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		a: [sprite('wallmaster'), 'wallmaster', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		b: [sprite('wizzrobe-blue'), 'wizzrobe', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		c: [sprite('wizzrobe-red'), 'wizzrobe', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }],
+		d: [sprite('zol'), 'zol', 'dangerous', { dir: -1, timer: 0, heart: 1.0 }]
 	}
 }
 
@@ -61,8 +117,54 @@ function loadEnemy(directory)
 {
 	loadRoot(directory)
 	
+	loadSprite('armos', 'armos.png')
 	loadSprite('blade_trap', 'blade_trap.png')
-	loadSprite('octorok', 'octorok-red.png')
+	loadSprite('boulder', 'boulder.png')
+	loadSprite('bubble-blue', 'bubble-blue.png')
+	loadSprite('bubble-red', 'bubble-red.png')
+	loadSprite('bubble-white', 'bubble-white.png')
+	loadSprite('darknut-blue', 'darknut-blue.png')
+	loadSprite('darknut-red', 'darknut-red.png')
+	loadSprite('gel', 'gel.png')
+	loadSprite('ghini', 'ghini.png')
+	loadSprite('gibdo', 'gibdo.png')
+	loadSprite('goriya-blue', 'goriya-blue.png')
+	loadSprite('goriya-red', 'goriya-red.png')
+	loadSprite('keese', 'keese.png')
+	loadSprite('lanmola-blue', 'lanmola-blue.png')
+	loadSprite('lanmola-red', 'lanmola-red.png')
+	loadSprite('leever-blue', 'leever-blue.png')
+	loadSprite('leever-red', 'leever-red.png')
+	loadSprite('like_like', 'like_like.png')
+	loadSprite('lynel-blue', 'lynel-blue.png')
+	loadSprite('lynel-red', 'lynel-red.png')
+	loadSprite('moblin-blue', 'moblin-blue.png')
+	loadSprite('moblin-red', 'moblin-red.png')
+	loadSprite('moldorm', 'moldorm.png')
+	loadSprite('octorok-blue', 'octorok-blue.png')
+	
+	/*
+	loadSprite('octorok-red-d1', 'octorok-red-d1.png')
+	loadSprite('octorok-red-l1', 'octorok-red-l1.png')
+	loadSprite('octorok-red-r1', 'octorok-red-r1.png')
+	loadSprite('octorok-red-u1', 'octorok-red-u1.png')
+	*/
+	
+	loadSprite('octorok-red', 'octorok-red.png')
+	loadSprite('patra', 'patra.png')
+	loadSprite('peahat', 'peahat.png')
+	loadSprite('pols_voice', 'pols_voice.png')
+	loadSprite('river_zora', 'river_zora.png')
+	loadSprite('rope-blue', 'rope-blue.png')
+	loadSprite('rope-red', 'rope-red.png')
+	loadSprite('stalfos', 'stalfos.png')
+	loadSprite('tektite-blue', 'tektite-blue.png')
+	loadSprite('tektite-red', 'tektite-red.png')
+	loadSprite('vire', 'vire.png')
+	loadSprite('wallmaster', 'wallmaster.png')
+	loadSprite('wizzrobe-blue', 'wizzrobe-blue.png')
+	loadSprite('wizzrobe-red', 'wizzrobe-red.png')
+	loadSprite('zol', 'zol.png')
 }
 
 function loadPlayer(directory)
