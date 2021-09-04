@@ -1684,17 +1684,17 @@ var maps = [
 			],
 			[
 				'^^^^^^^^^^^^^^^^^^',
-				'<wwwwwww  wwwwwww>',
-				'<w              w>',
-				'<w              w>',
-				'<w              w>',
-				'<w              w>',
-				'<                >',
-				'<w              w>',
-				'<w              w>',
-				'<w              w>',
-				'<w              w>',
-				'<wwwwwww  wwwwwww>',
+				'<vvvvv    yyyyyyy>',
+				'<vvv!v    yyyyyyy>',
+				'<     O   yyyyyyy>',
+				'<   P     yyyyyyy>',
+				'<      P  yyyyyyy>',
+				'<        Pyyyyyyy>',
+				'<     P   yyyyyyy>',
+				'<         yyyyyyy>',
+				'<         yyyyyyy>',
+				'<vvvvv    yyyyyyy>',
+				'<vvvvv    yyyyyyy>',
 				'__________________'
 			]
 		],
@@ -1938,7 +1938,7 @@ var maps = [
 				'<yyyyyyyyyyyyyyyy>',
 				'<yyyyyyyyyyyyyyyy>',
 				'__________________'
-			]
+			] 
 		]
 	],
 	// Underworld
@@ -5817,7 +5817,7 @@ var maps = [
 		]
 	],
 	// z
-	// Cyve"
+	// Caves
 	[
 		// y
 		[
