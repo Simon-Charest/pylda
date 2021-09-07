@@ -306,6 +306,19 @@ function playMusic(id = 'music')
 	}
 }
 
+function createGame(map_x=7, map_y=7, map_z=0, size=48, x=8.5, y=6, heart=3.0, rupee=0)
+{
+	return {
+		map_x: map_x,
+		map_y: map_y,
+		map_z: map_z,
+		pos_x: size * x,
+		pos_y: size * y,
+		heart: heart,
+		rupee: rupee
+	}
+}
+
 function deleteGame(value='', name='TheLegendOfZelda', expires='Thu, 01 Jan 1970 00:00:00 UTC', path='/', sameSite='None', secure='Secure')
 {
 	document.cookie = name + '=' + value + ';expires=' + expires + ';path=' + path + ';SameSite=' + sameSite + ';' + secure + ';' 
@@ -320,19 +333,6 @@ function loadGame()
 	}
 	
 	return null
-}
-
-function loadNewGame(map_x=7, map_y=7, map_z=0, size=48, x=8.5, y=6, heart=3.0, rupee=0)
-{
-	return {
-		map_x: map_x,
-		map_y: map_y,
-		map_z: map_z,
-		pos_x: size * x,
-		pos_y: size * y,
-		heart: heart,
-		rupee: rupee
-	}
 }
 
 function saveGame(value, name='TheLegendOfZelda', expires=2147483647, path='/', sameSite='None', secure='Secure')

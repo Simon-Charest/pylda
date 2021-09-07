@@ -275,7 +275,7 @@ scene('lose', ({ rupee }) => {
 let game = loadGame()
 
 if (!game) {
-	game = loadNewGame()
+	game = createGame()
 }
 
 start('game',
