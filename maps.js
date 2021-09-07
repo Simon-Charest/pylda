@@ -1,4 +1,4 @@
-var maps = [
+let maps = [
 	// z
 	// Overworld
 	[

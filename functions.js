@@ -271,7 +271,7 @@ function manageKeys(player)
 	})
 
 	function attack(p, time = 0.2) {
-		var swordSprite
+		let swordSprite
 		
 		if (player.dir.x == 0 && player.dir.y == 1) {
 			swordSprite = 'sword-down'
@@ -306,44 +306,36 @@ function playMusic(id = 'music')
 	}
 }
 
-function deleteGame(game = "TheLegendOfZelda", x = "", y = "", expires = 0, sameSite = "", secure_ = "")
+function deleteGame(value='', name='TheLegendOfZelda', expires='Thu, 01 Jan 1970 00:00:00 UTC', path='/', sameSite='None', secure='Secure')
 {
-	let cookie = "game=" + game
-		+ ";x=" + x
-		+ ";y=" + y
-		+ ";Expires=" + expires
-		+ ";SameSite=" + sameSite
-		+ ";" + secure_
-		+ ";"
-		
-	document.cookie = cookie
-	
-	console.log(cookie)
-	console.log("deleteGame.end")
+	document.cookie = name + '=' + value + ';expires=' + expires + ';path=' + path + ';SameSite=' + sameSite + ';' + secure + ';' 
 }
 
-function loadGame(game = "TheLegendOfZelda")
+function loadGame()
 {
-	let cookie = document.cookie.split(";")
+	let value = document.cookie.split('=')[1]
 	
-	console.log(cookie);
-	console.log("loadGame.end")
+	if (value) {
+		return JSON.parse(value)
+	}
 	
-	return cookie
+	return null
 }
 
-function saveGame(game = "TheLegendOfZelda", x = 7, y = 7, expires = 2147483647, sameSite = "Strict", secure_ = "Secure")
+function loadNewGame(map_x=7, map_y=7, map_z=0, size=48, x=8.5, y=6, heart=3.0, rupee=0)
 {
-	let cookie = "game=" + game
-		+ ";x=" + x
-		+ ";y=" + y
-		+ ";Expires=" + expires
-		+ ";SameSite=" + sameSite
-		+ ";" + secure_
-		+ ";"
-		
-	document.cookie = cookie
-	
-	console.log(cookie)
-	console.log("saveGame.end")
+	return {
+		map_x: map_x,
+		map_y: map_y,
+		map_z: map_z,
+		pos_x: size * x,
+		pos_y: size * y,
+		heart: heart,
+		rupee: rupee
+	}
+}
+
+function saveGame(value, name='TheLegendOfZelda', expires=2147483647, path='/', sameSite='None', secure='Secure')
+{
+	document.cookie = name + '=' + JSON.stringify(value) + ';expires=' + expires + ';path=' + path + ';SameSite=' + sameSite + ';' + secure + ';' 
 }

@@ -5,13 +5,13 @@ const PLAYER_DIR = ROOT_DIR + 'player/'
 const DOOR_DIR = ROOT_DIR + 'door/'
 const TILE_DIR = ROOT_DIR + 'tile/'
 const WALL_DIR = ROOT_DIR + 'wall/'
-const MAP_X = 11
-const MAP_Y = 6
+const MAP_X = 7
+const MAP_Y = 7
 const MAP_Z = 0
 const SIZE = 48
-const POS_X_CENTER = 8.5 * SIZE
-const POS_Y_CENTER = 6 * SIZE
-const POS_Y_BOTTOM = 11 * SIZE
+const POS_X_CENTER = SIZE * 8.5
+const POS_Y_CENTER = SIZE * 6
+const POS_Y_BOTTOM = SIZE * 11
 const HEART = 3.0
 const RUPEE = 0
 const SCALE_GAME = 1
@@ -25,15 +25,17 @@ const BLACK_COLOR = [0, 0, 0, 1]
 
 let music = null
 
+// Initialize kaboom context
 kaboom({
-	clearColor: BEIGE_COLOR,
+	clearColor: BEIGE_COLOR,	// Background color
 	crisp: true,
-	debug: true,
+	debug: true,				// Debug mode (F1 to inspect, F8 to pause, F7 F9 to manipulate time, F10 to skip frame)
 	fullscreen: true,
-	global: true,
-	scale: SCALE_GAME
+	global: true,				// Import every kaboom function into global namespace
+	scale: SCALE_GAME			// Pixel scale
 })
 
+// Load assets from url
 loadAudio(AUDIO_DIR)
 loadEnemy(ENEMY_DIR)
 loadPlayer(PLAYER_DIR)
@@ -41,18 +43,10 @@ loadDoor(DOOR_DIR)
 loadTile(TILE_DIR)
 loadWall(WALL_DIR)
 
-start('game',
-	{
-		map_x: MAP_X,
-		map_y: MAP_Y,
-		map_z: MAP_Z,
-		pos_x: POS_X_CENTER,
-		pos_y: POS_Y_CENTER,
-		heart: HEART,
-		rupee: RUPEE
-	}
-)
+// Force start new game
+//deleteGame()
 
+// Defining a scene
 scene('game', (
 	{
 		map_x,
@@ -64,19 +58,26 @@ scene('game', (
 		rupee
 	}
 ) => {
-	// TODO
-	//saveGame()
-	//loadGame()
-	//deleteGame()
-	
-	playMusic()
-	
+	// Define layers and the default layer
 	layers(['bg', 'obj', 'ui'], 'obj')
+	
+	// Play music
+	playMusic()
 
 	// Load level
 	addLevel(maps[map_z][map_y][map_x], getLevelConfiguration())
 
+	// Background
 	addBackground()
+	
+	// Create player: each game object is composed from a list of components
+	const player = add([
+		sprite('link-u1'),
+		pos(pos_x, pos_y),
+		{ dir: vec2(0, -1) },
+		scale(SCALE_PLAYER),
+		'killable'
+	])
 	
 	// Display scoreboard
 	
@@ -94,63 +95,70 @@ scene('game', (
 		scale(SCALE_TEXT)
 	])
 
-	// Create player
-	const player = add([
-		sprite('link-u1'),
-		pos(pos_x, pos_y),
-		{ dir: vec2(0, -1) },
-		scale(SCALE_PLAYER),
-		'killable'
-	])
-
 	player.action(() => { player.resolve() })
 	
 	player.collides('screen-up', () => {
-		go('game', {
+		let game = {
 			heart: heart,
 			rupee: rupeeLabel.value,
 			map_x: map_x,
 			map_y: map_y - 1,
 			map_z: map_z,
 			pos_x: player.pos.x,
-			pos_y: 11 * SIZE
-		})
+			pos_y: SIZE * 11 - 1
+		}
+		
+		saveGame(game)
+		
+		go('game', game)
 	})
 	
 	player.collides('screen-down', () => {
-		go('game', {
+		let game = {
 			heart: heart,
 			rupee: rupeeLabel.value,
 			map_x: map_x,
 			map_y: map_y + 1,
 			map_z: map_z,
 			pos_x: player.pos.x,
-			pos_y: 1 * SIZE
-		})
+			pos_y: SIZE * 1 + 1
+		}
+		
+		saveGame(game)
+		
+		go('game', game)
 	})
 	
 	player.collides('screen-left', () => {
-		go('game', {
+		let game = {
 			heart: heart,
 			rupee: rupeeLabel.value,
 			map_x: map_x - 1,
 			map_y: map_y,
 			map_z: map_z,
-			pos_x: 16 * SIZE,
+			pos_x: SIZE * 16 - 1,
 			pos_y: player.pos.y
-		})
+		}
+		
+		saveGame(game)
+		
+		go('game', game)
 	})
 	
 	player.collides('screen-right', () => {
-		go('game', {
+		let game = {
 			heart: heart,
 			rupee: rupeeLabel.value,
 			map_x: map_x + 1,
 			map_y: map_y,
 			map_z: map_z,
-			pos_x: 1 * SIZE,
+			pos_x: SIZE * 1 + 1,
 			pos_y: player.pos.y
-		})
+		}
+		
+		saveGame(game)
+		
+		go('game', game)
 	})
 	
 	manageKeys(player)
@@ -263,3 +271,21 @@ scene('lose', ({ rupee }) => {
 		pos(width() / 2, height() / 2)
 	])
 })
+
+let game = loadGame()
+
+if (!game) {
+	game = loadNewGame()
+}
+
+start('game',
+	{
+		map_x: game.map_x,
+		map_y: game.map_y,
+		map_z: game.map_z,
+		pos_x: game.pos_x,
+		pos_y: game.pos_y,
+		heart: game.heart,
+		rupee: game.rupee
+	}
+)
