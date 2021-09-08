@@ -210,6 +210,7 @@ scene('game', (
 		}
 	})
 
+	// Player slashing enemy
 	collides('kaboom', 'octorok', (k,s) => {
 		camShake(4)
 		wait(1, () => { destroy(k) })
@@ -226,7 +227,7 @@ scene('game', (
 		s.dir = -s.dir
 	})
 
-	// TODO: Fix monsters' collision detection
+	// Enemy moving
 	action('octorok', (s) => {
 		if (s.axis == 0) {
 			s.move(s.dir * OCTOROK_SPEED, 0)
@@ -245,6 +246,7 @@ scene('game', (
 		}
 	})
 
+	// Enemy hitting wall (TODO: fix this)
 	collides('octorok', 'wall', (s) => {
 		s.dir = -s.dir
 	})
