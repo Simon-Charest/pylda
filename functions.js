@@ -142,6 +142,7 @@ function loadEnemy(directory)
 	loadSprite('moblin-red', 'moblin-red.png')
 	loadSprite('moldorm', 'moldorm.png')
 	loadSprite('octorok-blue', 'octorok-blue.png')
+	loadSprite('octorok-red', 'octorok-red.png')
 	
 	/*
 	loadSprite('octorok-red-d1', 'octorok-red-d1.png')
@@ -150,7 +151,6 @@ function loadEnemy(directory)
 	loadSprite('octorok-red-u1', 'octorok-red-u1.png')
 	*/
 	
-	loadSprite('octorok-red', 'octorok-red.png')
 	loadSprite('patra', 'patra.png')
 	loadSprite('peahat', 'peahat.png')
 	loadSprite('pols_voice', 'pols_voice.png')
